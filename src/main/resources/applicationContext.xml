@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="CreativeDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/Creative" />
+        <property name="username" value="postgres" />
+        <property name="password" value="dgbsq5" />
+    </bean>
+
+    <bean id="UserDAOImpl" class="com.creative.Impl.UserDAOImpl" init-method="init">
+        <property name="queries">
+            <ref bean="UserDAOImplSQL" />
+        </property>
+        <property name="dataSource">
+            <ref bean="CreativeDataSource" />
+        </property>
+    </bean>
+
+    <bean id="UserDAOImplSQL" class="java.util.HashMap">
+        <constructor-arg index="0">
+            <map>
+                <entry key="FIND_ALL_USERS">
+                    <value>
+                        <![CDATA[
+                        SELECT DISTINCT("Name")
+                        FROM public."Users"
+                        ]]>
+                    </value>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+</beans>
